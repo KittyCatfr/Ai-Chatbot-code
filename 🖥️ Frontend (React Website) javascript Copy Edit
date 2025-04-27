@@ -1,1 +1,41 @@
+// App.jsx
+import { useState } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [input, setInput] = useState('');
+  const [response, setResponse] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await axios.post('http://localhost:5000/api/chat', { message: input });
+    setResponse(res.data.reply);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex flex-col items-center justify-center p-6">
+      <h1 className="text-4xl mb-8 font-bold">🌟 My AI Chatbot</h1>
+      <form onSubmit={handleSubmit} className="w-full max-w-md">
+        <input
+          className="w-full p-3 rounded-lg mb-4 text-black"
+          type="text"
+          placeholder="Ask me anything..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-500 p-3 rounded-lg hover:bg-blue-600 transition"
+        >
+          Send
+        </button>
+      </form>
+      <div className="mt-8 bg-gray-800 p-6 rounded-lg w-full max-w-md">
+        {response ? <p>{response}</p> : <p>Type a question to get started!</p>}
+      </div>
+    </div>
+  );
+}
+
+export default App;
 
